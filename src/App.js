@@ -1,12 +1,8 @@
 import "./App.css";
-import { Button } from "antd";
+import MainRouter from "routes";
 
 function App() {
-  return (
-    <div className="App">
-      <Button type="primary">Button</Button>
-    </div>
-  );
+  return <MainRouter />;
 }
 
 export default App;
