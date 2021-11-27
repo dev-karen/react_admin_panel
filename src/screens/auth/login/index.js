@@ -1,16 +1,33 @@
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, Checkbox } from "antd";
 import Style from "./style";
+import { postRequest } from "api";
+import { POST_API_URL } from "./constants";
+import { useState } from "react";
 
 const { Item } = Form;
 export function Login() {
   const [form] = Form.useForm();
-  function handleSubmit(values) {
-    console.log(values);
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(formValues) {
+    try {
+      setLoading(true);
+      await postRequest(POST_API_URL, formValues);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log("error handleSubmit : " + JSON.stringify(error));
+    }
   }
+
   return (
     <Style>
       <img className="logo" src="assest/images/logo.svg" />
-      <Form form={form} onFinish={handleSubmit}>
+      <Form
+        form={form}
+        onFinish={handleSubmit}
+        initialValues={{ remember: false }}
+      >
         <Item
           name="email"
           rules={[
@@ -29,8 +46,11 @@ export function Login() {
             placeholder="please your password"
           />
         </Item>
+        <Item name="remember" valuePropName="checked">
+          <Checkbox>Remember me</Checkbox>
+        </Item>
         <Item>
-          <Button type="primary" block htmlType="submit">
+          <Button type="primary" block htmlType="submit" loading={loading}>
             login
           </Button>
         </Item>
