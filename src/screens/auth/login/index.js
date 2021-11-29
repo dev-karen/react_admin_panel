@@ -3,16 +3,26 @@ import Style from "./style";
 import { postRequest } from "api";
 import { POST_API_URL } from "./constants";
 import { useState } from "react";
+import {
+  useUserTokenStateDispatcher,
+  userTokenAction,
+  useUserTokenState,
+} from "context/userToken";
 
 const { Item } = Form;
 export function Login() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
+  const tokenDispatcher = useUserTokenStateDispatcher();
+  const tokenState = useUserTokenState();
   async function handleSubmit(formValues) {
     try {
       setLoading(true);
-      await postRequest(POST_API_URL, formValues);
+
+      const response = await postRequest(POST_API_URL, formValues);
+      console.log("response", response);
+      userTokenAction(tokenDispatcher, response.data.data.accessToken);
       setLoading(false);
     } catch (error) {
       setLoading(false);

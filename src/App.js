@@ -1,8 +1,9 @@
-import "./App.css";
+import { UserTokenProvider } from "context/userToken/";
 import MainRouter from "routes";
+import "./App.css";
 
 function App() {
-  return <MainRouter />;
+  return <p></p>;
 }
 
 export default App;
