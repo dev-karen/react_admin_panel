@@ -5,8 +5,22 @@ import {
   VideoCameraOutlined,
 } from "@ant-design/icons";
 import Style from "./style";
+import {
+  useUserTokenStateDispatcher,
+  userTokenAction,
+} from "context/userToken";
+import { LOCAL_STORAGE_TOKEN_KEY } from "src/constants";
+import { useHistory } from "react-router-dom";
+import { DASHBOARD_ROUTE } from "routes/constants";
 const { Header, Content, Footer, Sider } = Layout;
 export const DashboardLayout = ({ children, title }) => {
+  const navigate = useHistory();
+  const tokenDispatcher = useUserTokenStateDispatcher();
+  function handleLogout() {
+    userTokenAction(tokenDispatcher, { type: "LOGOUT" });
+    localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
+    navigate.push(DASHBOARD_ROUTE);
+  }
   return (
     <Style>
       <Layout>
@@ -31,8 +45,8 @@ export const DashboardLayout = ({ children, title }) => {
             <Menu.Item key="3" icon={<UploadOutlined />}>
               nav 3
             </Menu.Item>
-            <Menu.Item key="4" icon={<UserOutlined />}>
-              nav 4
+            <Menu.Item key="4" icon={<UserOutlined />} onClick={handleLogout}>
+              Log Out
             </Menu.Item>
           </Menu>
         </Sider>

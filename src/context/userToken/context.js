@@ -1,6 +1,6 @@
 import { createContext, useContext, useReducer } from "react";
 import { UserTokenReducer } from "./reducer";
-
+import { LOCAL_STORAGE_TOKEN_KEY } from "src/constants";
 export const UserTokenState = createContext();
 export const UserTokenStateDispatcher = createContext();
 
@@ -10,7 +10,10 @@ export function useUserTokenState() {
 export function useUserTokenStateDispatcher() {
   return useContext(UserTokenStateDispatcher);
 }
-export const initialState = {};
+
+const getLocalStorageToken = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
+
+export const initialState = getLocalStorageToken || "";
 export function UserTokenProvider({ children }) {
   const [user, dispatch] = useReducer(UserTokenReducer, initialState);
   return (
